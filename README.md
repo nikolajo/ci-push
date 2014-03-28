@@ -1,7 +1,7 @@
 ci-push
 =======
 
-Project dedicated to annihilate CI polling
+Project dedicated to annihilating CI polling
 
 The idea is to create a loosely coupled system that allows different VCS's to emit commit events to different CI platforms.
 Thereby acheiving push from the VCS to the CI platform.
@@ -17,9 +17,5 @@ ESB tier:
 CI tier:
 - A CI plugin that is able to register as a listener on the ESB and when seeing incoming events trigger a build
 
-The glue that binds these tiers is the event. The event is defines as:
-
-CommitEvent
-   branch
-   path
+The glue that binds these tiers is the event. The event has at least two attributes: branch and path
 
