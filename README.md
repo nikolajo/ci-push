@@ -4,7 +4,11 @@ ci-push
 This project aims to annihilate CI polling
 
 The idea is to create a loosely coupled system that allows different VCS's to emit commit events and different CI platforms to listen for these events.
-Thereby achieving push from the VCS to the CI platform.
+Thereby achieving push from the VCS to the CI platform. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
+Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ).
+
+The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server ( which will be identical to each other )
+
 
 3 tiers are present:
 
@@ -20,14 +24,15 @@ Thereby achieving push from the VCS to the CI platform.
 The glue that binds these tiers is the event. The event has two attributes: branch and path
 
 
-USING CI-PUSH:
+USING CI-PUSH
 ==============
-ELIMINATE ALL POLLING IN 15 MINUTES: - if you use Git and Jenkins on Windows
+<b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only if you use Git and Jenkins on Windows )
 - To get started install the Server as described in the Server section.
 - Then install and configure the Git hook as described in the VCS/Git/Windows folder.
 - Then install and configure the Jenkins CI plugin as described in the CI/Jenkins folder. 
 
-If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit.
+If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
+See below in the DEVELOPING CI-PUSH section.
 
 
 
@@ -47,6 +52,6 @@ A Jenkins plugin can be found in CI/Jenkins. Each folder contains a INSTALL.md f
 	
 	
 	
-DEVELOPING CI-PUSH:
+DEVELOPING CI-PUSH
 ===================
-TBA	
+Coming....

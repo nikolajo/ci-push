@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:amqp="http://www.mulesoft.org/schema/mule/amqp" xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd
+http://www.mulesoft.org/schema/mule/amqp http://www.mulesoft.org/schema/mule/amqp/current/mule-amqp.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+    <amqp:connector name="AMQP_Connector" validateConnections="true" fallbackAddresses="localhost:5672" doc:name="AMQP Connector"/>
+    <flow name="push-trigger-file-flow" doc:name="push-trigger-file-flow">
+        <file:inbound-endpoint responseTimeout="10000" doc:name="File" path="e:\pushfiles" pollingFrequency="100"/>
+        <file:file-to-string-transformer doc:name="File to String"/>
+		<custom-transformer class="dk.topdanmark.mule.transformer.FileTransformer" doc:name="Java"/>
+        <flow-ref name="push-trigger-amqp-sub-flow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="push-trigger-http-flow" doc:name="push-trigger-http-flow">
+        <http:inbound-endpoint exchange-pattern="one-way"   doc:name="HTTP" address="http://bisp01b1:8081/push"/>
+        <set-property value="#[message.inboundProperties['branch']]" propertyName="branch" doc:name="Property" />
+        <set-property value="#[message.inboundProperties['path']]" propertyName="path" doc:name="Property" />
+        <set-property value="#[message.inboundProperties['branch']].#[message.inboundProperties['path']]" propertyName="routing-key" doc:name="Property" />
+        <set-payload value="CommitEvent" doc:name="Set Payload"/>
+        <flow-ref name="push-trigger-amqp-sub-flow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="push-trigger-amqp-flow" doc:name="push-trigger-amqp-flow">
+        <amqp:inbound-endpoint responseTimeout="10000" connector-ref="AMQP_Connector" doc:name="AMQP" queueName="PushTriggerQueue"/>
+        <set-property value="#[message.inboundProperties['branch']]" propertyName="branch" doc:name="Property" />
+        <set-property value="#[message.inboundProperties['path']]" propertyName="path" doc:name="Property" />
+        <set-property value="#[message.inboundProperties['branch']].#[message.inboundProperties['path']]" propertyName="routing-key" doc:name="Property" />
+        <set-payload value="CommitEvent" doc:name="Set Payload"/>
+        <flow-ref name="push-trigger-amqp-sub-flow" doc:name="Flow Reference"/>
+    </flow>
+    <sub-flow name="push-trigger-amqp-sub-flow" doc:name="push-trigger-amqp-sub-flow">
+        <logger level="INFO" doc:name="Logger" message="#[message.outboundProperties]"/>
+        <amqp:outbound-endpoint exchangeName="PushTriggerTopic" responseTimeout="10000" connector-ref="AMQP_Connector" doc:name="AMQP" exchangeType="topic" routingKey="#[message.outboundProperties['routing-key']]"/>
+    </sub-flow>
+</mule>
