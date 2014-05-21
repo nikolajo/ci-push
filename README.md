@@ -34,20 +34,18 @@ USING CI-PUSH
 If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
 See below in the DEVELOPING CI-PUSH section.
 
-
-
-VCS:
-	All the available hooks and triggers can be found in the VCS folder. They are subdivided by VCS system and platform.
+<b>VCS</b><br/>
+All the available hooks and triggers can be found in the VCS folder. They are subdivided by VCS system and platform.
 A Git hook for windows can be found in the folder VCS/Git/Windows/. Each folder will also contain a INSTALL.md file that describes
 how to install/configure/use the hook.
 
-Server:
-	The black box server can be found in the Server folder. It consists of a Mule ESB Community Edition and a Mule flow and a RabbitMQ ( AMQP ) installation.
+<b>Server</b><br/>
+The black box server can be found in the Server folder. It consists of a Mule ESB Community Edition and a Mule flow and a RabbitMQ ( AMQP ) installation.
 Each of these components must be installed on a server that your VCS and CI systems can reach. See the INSTALL.md files in the Server/ESB and Server/AMQP
 folders for detailed instructions.
 
-CI:
-	All plugins for the CI systems can be found in the CI folder. They are subdivede by CI system and platform ( if necessary )
+<b>CI</b><br/>
+All plugins for the CI systems can be found in the CI folder. They are subdivede by CI system and platform ( if necessary )
 A Jenkins plugin can be found in CI/Jenkins. Each folder contains a INSTALL.md file that describes how to install/configure/use the plugin.
 	
 	
