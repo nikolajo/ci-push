@@ -8,13 +8,13 @@ Thereby achieving push from the VCS to the CI platform.
 
 3 tiers are present:
 
-VCS tier:
+<b>VCS tier:</b>
 - A hook or trigger in the VCS system that detects the commit event and pushes it to the Push Server
 
-Push Server tier:
+<b>Push Server tier:</b>
 - An black box server tier that routes the incoming events to relevant listeners
 
-CI tier:
+<b>CI tier:</b>
 - A CI plugin that is able to register as a listener on the server tier and when notified trigger a build
 
 The glue that binds these tiers is the event. The event has two attributes: branch and path
