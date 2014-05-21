@@ -1,0 +1,11 @@
+<div>
+  Enter the server routing filter. <a href="http://www.rabbitmq.com/tutorials/tutorial-five-java.html">The MQ topic routing key</a><br>
+  Leaving this field empty will forward all events to this Jenkins instance. ( do so if in doubt )<br>
+  It must take the form '&lt;branch&gt;.&lt;path&gt;', ie. MAIN.MyProject where MAIN is a repository branch name and MyProject is a repository folder.<br>
+  The .&lt;path&gt; part is optional. You can use # for wildcards. Other examples are: <br>
+  MASTER : Get only events from the MASTER branch<br>
+  MASTER.Source/Java/NewProject : Get only events from the MASTER branch where the path begins with Source/Java/NewProject<br>
+  #.JS/MyProject : Get only events from all branches where the path begins with JS/MyProject<br>
+  You cannot use wildcards inside a branch or path. The wildcard can only be used for the entire branch or path.<br>
+  You must restart Jenkins for this filter to take effect. ( unless you haven't created any jobs with the push trigger yet )
+</div>

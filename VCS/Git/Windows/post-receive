@@ -1,0 +1,2 @@
+#!/bin/sh
+cmd.exe /c "hooks\post-commit-event.cmd"
