@@ -29,9 +29,9 @@ The glue that binds these tiers is the event. The event has two attributes: bran
 USING ci-push
 ==============
 <b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only if you use Jenkins and Git on Windows )
-- To get started install the Server as described in the Server section.
-- Then install and configure the Git hook as described in the VCS/Git/Windows folder.
-- Then install and configure the Jenkins CI plugin as described in the CI/Jenkins folder. 
+- To get started install the Server as described in the <a href="./Server">Server</a> section.
+- Then install and configure the Git hook as described in the <a href="./VCS/Git/Windows">VCS/Git/Windows</a> folder.
+- Then install and configure the Jenkins CI plugin as described in the <a href="./CI/Jenkins">CI/Jenkins</a> folder. 
 
 If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
 See below in the DEVELOPING ci-push section.
