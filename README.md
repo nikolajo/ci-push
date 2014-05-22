@@ -34,7 +34,7 @@ USING ci-push
 - Then install and configure the Jenkins CI plugin as described in the CI/Jenkins folder. 
 
 If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
-See below in the DEVELOPING CI-PUSH section.
+See below in the DEVELOPING ci-push section.
 
 <b>VCS</b><br/>
 All the available hooks and triggers can be found in the VCS folder. They are subdivided by VCS system and platform.

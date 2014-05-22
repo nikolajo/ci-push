@@ -7,9 +7,11 @@ Then open Jenkins in a browser and go to 'Manage Jenkins' -> 'Manage Plugins' ->
 <br/>
 Alternatively you can download the push-receiver folder in the source folder and package the project with Maven ( mvn clean package )
 <br/>
+Eventually the plugin will be made available from the official Jenkins plugin site.
+<br/>
 <b>CONFIGURE</b><br/>
 In Jenkins go to 'Manage Jenkins' -> 'Configure System'. Find the 'Push Trigger Server' section ( if you cannot see this section and you have installed the plugin as described above, please try to restart Jenkins )
-In the Server field enter the name ( IP or DNS ) of the machine where the Push Server is installed. See under Server in this github project for instructions on how to install the push server.
+In the Server field enter the name ( IP or DNS ) of the machine where the Push Server is installed. See under Server in this github project for instructions on how to install the Push Server.
 The Server Routing Filter field can be left empty.
 <br/>
 In the relevant Jenkins job ( under 'Configure' ) now change the 'Build Triggers' to 'Push Trigger'
