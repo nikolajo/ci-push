@@ -10,15 +10,20 @@ set OLDREV=%OLDREV_NEWREV_REFNAME:~0,40%
 set NEWREV=%OLDREV_NEWREV_REFNAME:~41,40%
 set REFNAME=%OLDREV_NEWREV_REFNAME:~82,999%
 
-for /f "tokens=4* delims=\ " %%a in ("%CD%") do set BRANCH=%%a&set REPOPATH=%%b
-set REPOPATH=%REPOPATH:\=/%
-
+:: get branch name
+for /f "tokens=3* delims=/ " %%a in ("%REFNAME%") do set BRANCH=%%a
 echo Branch is %BRANCH%
+
+:: get root repo path
+for %%* in (%CD%) do set REPOPATH=%%~n*
+set REPOPATH=%REPOPATH:\=/%
 echo Repo root path is %REPOPATH%
 
+:: get committed files
 set TEMPFILE=%NEWREV%temp.txt
 git show --pretty="format:" --name-only %NEWREV% > %TEMPFILE%
 
+:: create and write new files and copy them to the push trigger server share
 set /a c=0
 setlocal ENABLEDELAYEDEXPANSION
 FOR /F "eol=; delims=  " %%i in (%TEMPFILE%) do (
@@ -27,7 +32,7 @@ FOR /F "eol=; delims=  " %%i in (%TEMPFILE%) do (
 	set PUSHFILE=%NEWREV%!c!.txt
 	echo branch=%BRANCH% > !PUSHFILE!
 	echo path=%REPOPATH%/%%i >> !PUSHFILE!
-	copy !PUSHFILE! \\<server>\pushfiles\!PUSHFILE!
+	copy !PUSHFILE! \\bist01b1\pushfiles\!PUSHFILE!
 	del !PUSHFILE!	
 )
 endlocal
