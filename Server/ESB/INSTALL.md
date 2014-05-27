@@ -14,7 +14,7 @@ If in doubt consult your operating system guide for how to setup a public share.
 The file share and the port of the http interface can be customized by changing the push-trigger.properties file found in the push-trigger-flow/bin folder and then dropping the push-trigger.properties file in the conf folder of the mule installation.
 <br/><br/>
 The default values for the Push Server interfaces are:<br/>
-- Http interface is <Push Server IP>:8081
-- File interface is share at <root of Push Server>/pushfiles 
+- Http interface is &lt;Push Server IP&gt;:8081
+- File interface is share at &lt;root of Push Server&gt;/pushfiles 
 - AMQP interface is using a queue named PushTriggerQueue
 
