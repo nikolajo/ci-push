@@ -1,13 +1,11 @@
 ci-push
 =======
 
-DRAFT!
-
 This project aims to annihilate CI polling
 
 The idea is to create a loosely coupled system that allows different VCS's to emit commit events and different CI platforms to listen for these events.
 Thereby achieving push from the VCS to the CI platform. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
-Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ).
+Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ) and vice versa.
 
 The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server ( which will be identical to each other )
 
@@ -28,7 +26,7 @@ The glue that binds these tiers is the event. The event has two attributes: bran
 
 USING ci-push
 ==============
-<b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only if you use Jenkins and Git on Windows )
+<b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only plugins for Jenkins and hooks for Git on Windows are available )
 - To get started install the Server as described in the <a href="./Server">Server</a> section.
 - Then install and configure the Git hook as described in the <a href="./VCS/Git/Windows">VCS/Git/Windows</a> folder.
 - Then install and configure the Jenkins CI plugin as described in the <a href="./CI/Jenkins">CI/Jenkins</a> folder. 
@@ -39,7 +37,7 @@ See below in the DEVELOPING ci-push section.
 <b>VCS</b><br/>
 All the available hooks and triggers can be found in the VCS folder. They are subdivided by VCS system and platform.
 A Git hook for windows can be found in the folder VCS/Git/Windows/. Each folder will also contain a INSTALL.md file that describes
-how to install/configure/use the hook.
+how to install/configure/use the hook.<br/>
 
 <b>Server</b><br/>
 The black box server can be found in the Server folder. It consists of a Mule ESB Community Edition and a Mule flow and a RabbitMQ ( AMQP ) installation.

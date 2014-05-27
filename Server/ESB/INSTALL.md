@@ -11,4 +11,10 @@ You must setup a public writable share in order for the Push Server file interfa
 The default share name that must be created is 'pushfiles'. It must be created on the Push Server machine and be a public writable share. 
 If in doubt consult your operating system guide for how to setup a public share.
 <br/>
+The file share and the port of the http interface can be customized by changing the push-trigger.properties file found in the push-trigger-flow/bin folder and then dropping the push-trigger.properties file in the conf folder of the mule installation.
+<br/>
+The default values for the Push Server interfaces are:<br/>
+- Http interface is <Push Server IP>:8081
+- File interface is share at <root of Push Server>/pushfiles 
+- AMQP interface is using a queue named PushTriggerQueue
 

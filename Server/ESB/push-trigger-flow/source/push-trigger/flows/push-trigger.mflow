@@ -27,7 +27,25 @@
             <property name="auxiliary;index" value="1"/>
         </properties>
     </global-element>
-    <flow SubFlow="false" name="push-trigger-file-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="011e867b-80cf-40c8-8467-85ee2db7e09a">
+    <global-element name="Property Placeholder" type="http://www.springframework.org/schema/context/property-placeholder" entity-id="Property Placeholder#1">
+        <properties>
+            <property name="properties-ref"/>
+            <property name="order"/>
+            <property name="location" value="classpath:push-trigger-default.properties, classpath*:push-trigger.properties"/>
+            <property name="local-override"/>
+            <property name="system-properties-mode"/>
+            <property name="file-encoding"/>
+            <property name="auxiliary;wrappedIn" value="beans@spring@http://www.springframework.org/schema/beans"/>
+            <property name="auxiliary;wrapIn" value="24"/>
+            <property name="auxiliary;index" value="25"/>
+            <property name="ignore-unresolvable"/>
+            <property name="ignore-resource-not-found"/>
+        </properties>
+    </global-element>
+    <global-unknown description="false" unknownName="create-queue-custom-agent" index="26" entity-id="global-unknown#1">
+        <content>&lt;custom-agent xmlns=&quot;http://www.mulesoft.org/schema/mule/core&quot; name=&quot;create-queue-custom-agent&quot; class=&quot;org.pushtrigger.mule.agent.CreateQueueAgent&quot;/&gt;</content>
+    </global-unknown>
+    <flow SubFlow="false" name="push-trigger-file-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="421126c0-8daf-434d-9fc9-6402ffad6ba3">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -54,7 +72,7 @@
                     <property name="moveToDirectory"/>
                     <property name="address"/>
                     <property name="fileAge"/>
-                    <property name="path" value="e:\pushfiles"/>
+                    <property name="path" value="${push-trigger-file-share}"/>
                     <property name="encoding"/>
                     <property name="outputPattern"/>
                     <property name="auxiliary;index" value="3"/>
@@ -79,7 +97,7 @@
                     <property name="returnClass"/>
                     <property name="ignoreBadInput"/>
                     <property name="encoding"/>
-                    <property name="class" value="dk.topdanmark.mule.transformer.FileTransformer"/>
+                    <property name="class" value="org.pushtrigger.mule.transformer.FileTransformer"/>
                     <property name="auxiliary;index" value="5"/>
                     <property name="mimeType"/>
                 </properties>
@@ -93,7 +111,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="false" name="push-trigger-http-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="c57fdfb0-87c5-4658-b6eb-caadf57cf3c6">
+    <flow SubFlow="false" name="push-trigger-http-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="f5f3b5cb-0be1-4764-823b-4be199a57e3d">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -121,7 +139,7 @@
                     <property name="ref"/>
                     <property name="transformer-refs"/>
                     <property name="httpLabel"/>
-                    <property name="address" value="http://bisp01b1:8081/push"/>
+                    <property name="address" value="http://0.0.0.0:${push-trigger-http-port}/push"/>
                     <property name="path"/>
                     <property name="encoding"/>
                     <property name="responseTransformer-refs"/>
@@ -176,7 +194,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="false" name="push-trigger-amqp-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="47d91166-9fe2-4137-a11e-cb1fe3591618">
+    <flow SubFlow="false" name="push-trigger-amqp-flow" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="55427984-0895-4b40-b390-18866b9f8cf8">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -258,7 +276,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="push-trigger-amqp-sub-flow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="09c23f6f-d6ae-4826-9097-7c11c15cbcc0">
+    <flow SubFlow="true" name="push-trigger-amqp-sub-flow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="0cf93d99-e400-4ad5-91c6-bf3e5ec51650">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>

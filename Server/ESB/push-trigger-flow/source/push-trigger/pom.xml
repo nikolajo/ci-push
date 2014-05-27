@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.example.mule</groupId>
+	<groupId>org.pushtrigger.mule</groupId>
 	<artifactId>push-trigger</artifactId>
 	<packaging>mule</packaging>
 	<version>1.0</version>
@@ -146,6 +146,7 @@
 		      </plugin>
 		      
 		      <!--Install clover-plugins-->
+<!-- 		      
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -176,6 +177,7 @@
                     </execution>
                 </executions>
             </plugin>
+-->            
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
@@ -400,12 +402,14 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+<!-- 		
 		<dependency>
 			<groupId>com.cloveretl</groupId>
 			<artifactId>cloveretl-engine</artifactId>
 			<version>${mule.version}</version>
 			<scope>test</scope>
 		</dependency>
+-->		
 	<dependency>
             <groupId>org.mule.transports</groupId>
             <artifactId>mule-transport-amqp</artifactId>
