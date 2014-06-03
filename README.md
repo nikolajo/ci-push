@@ -63,41 +63,40 @@ The Push Server has 3 interfaces that a VCS hook can use:
 - The http interface 
 - The AMQP interface
 
+You can choose which ever interface suits your purpose best and fits best with the given hooks in the VCS system.<br/><br/>
 <b>The file interface</b><br/>
 The file interface works by copying ( moving ) a file to a specific share on the Push Server. This share is typically setup when the Push Server is installed. The default share is
-'pushfiles'. The file the is being moved to the share must contain two lines. A line that tells which branch the commited file was on and a line that tells which path the commited file has. An example of 
+'pushfiles'. The file that is being moved to the share must contain two lines. A line that tells which branch the commited file was on and a line that tells which path the commited file has. An example of 
 the contents of such a file is shown here:<br/>
 branch=master<br/>
 path=Java/banking/BankProject/com/example/banking/MyBank.java<br/>
 The example here will then trigger all CI systems that are listening for events for branch master and paths matching part of Java/banking/BankProject/com/example/banking/MyBank.java<br/>
 <br/>
 <b>The http interface</b><br/>
-The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP of Push Server&gt;:8081/push&path=&lt;path&gt;&branch=&lt;branch&gt;,
-where &lt;path&gt; is the path of the commited file and &lt;branch&gt; is the branch that the file was commited on.<br/>
+The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP of Push Server&gt;:8081/push?branch=&lt;branch&gt;&path=&lt;path&gt;,
+where &lt;branch&gt; is the branch that the file was commited on and &lt;path&gt; is the path of the commited file.<br/>
 <br/>
 <b>The AMQP interface</b><br/>
 The AMQP interface works by putting a message on the PushTriggerQueue that the Push Server sets up when installed. The PushTriggerQueue can be found on the machine that the Push Server is installed on.<br/>
 The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ</a><br/>
-<code><br/>
-            ConnectionFactory factory = new ConnectionFactory();<br/>
-            factory.setHost("&lt;IP of PUSh Server&gt;");<br/>
-			<br/>
-            connection = factory.newConnection();<br/>
-            channel = connection.createChannel();<br/>
-			<br/>
-            channel.queueDeclare(QUEUE_NAME, false, false, false, null);<br/>
-            String message = "Commit";<br/>
-			<br/>
-            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();<br/>
-            props.put("path","Java/banking/BankProject/com/example/banking/MyBank.java");<br/>
-            props.put("branch","master");<br/>
-			<br/>
-            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();<br/>
-            AMQP.BasicProperties basicProps = bob.headers(props).build();<br/>
-			<br/>
-            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());<br/>
-</code><br/>
-You can choose which ever interface suits your purpose best and fits best with the given hooks in the VCS system.<br/>
+<br/>
+<code>			  ConnectionFactory factory = new ConnectionFactory();</code>
+<code>            factory.setHost("&lt;IP of PUSh Server&gt;");</code>
+<br/>
+<code>            connection = factory.newConnection();</code>
+<code>            channel = connection.createChannel();</code>
+<br/>
+<code>            channel.queueDeclare(QUEUE_NAME, false, false, false, null);</code>
+<code>            String message = "Commit";</code>
+<br/>
+<code>            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();</code>
+<code>            props.put("path","Java/banking/BankProject/com/example/banking/MyBank.java");</code>
+<code>            props.put("branch","master");</code>
+<br/>
+<code>            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();</code>
+<code>            AMQP.BasicProperties basicProps = bob.headers(props).build();</code>
+<code>            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());</code>
+<br/>
 <br/>
 <br/>
 <b>Developing a CI plugin</b><br/>
