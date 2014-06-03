@@ -66,8 +66,8 @@ You can choose which ever interface suits your purpose best and fits best with t
 The file interface works by copying ( moving ) a file to a specific share on the Push Server. This share is typically setup when the Push Server is installed. The default share is
 'pushfiles'. The file that is being moved to the share must contain two lines. A line that tells which branch the commited file was on and a line that tells which path the commited file has. An example of 
 the contents of such a file is shown here:<br/>
-branch=master<br/>
-path=Java/banking/BankProject/com/example/banking/MyBank.java<br/>
+<code>branch=master</code><br/>
+<code>path=Java/banking/BankProject/com/example/banking/MyBank.java</code><br/>
 The example here will then trigger all CI systems that are listening for events for branch master and paths matching part of Java/banking/BankProject/com/example/banking/MyBank.java<br/>
 <br/>
 <b>The http interface</b><br/>
@@ -113,9 +113,9 @@ This can be done in many ways and by different languages. See below for a Java e
 <code>            channel.basicConsume(queueName, true, consumer);</code><br/>
 <br/>
 <code>            while (true) { //This might not be a reasonable loop</code><br/>
-<code>                QueueingConsumer.Delivery delivery = consumer.nextDelivery();</code><br/>
-<code>                String message = new String(delivery.getBody());</code><br/>
-<code>                String routingKey = delivery.getEnvelope().getRoutingKey();</code><br/>
+<code>                        QueueingConsumer.Delivery delivery = consumer.nextDelivery();</code><br/>
+<code>                        String message = new String(delivery.getBody());</code><br/>
+<code>                        String routingKey = delivery.getEnvelope().getRoutingKey();</code><br/>
 <code>            }</code><br/>
 <br/>
 The <code>message</code> isn't used for anything useful, but the <code>routingKey</code> is the topic routing key that consists of the branch and the path separated by a . (dot). See <a href="http://www.rabbitmq.com/tutorials/tutorial-five-java.html">RabbitMQ Topic Routing Key</a> 
