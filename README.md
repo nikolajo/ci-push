@@ -80,22 +80,22 @@ where &lt;branch&gt; is the branch that the file was commited on and &lt;path&gt
 The AMQP interface works by putting a message on the PushTriggerQueue that the Push Server sets up when installed. The PushTriggerQueue can be found on the machine that the Push Server is installed on.<br/>
 The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ</a><br/>
 <br/>
-<code>			  ConnectionFactory factory = new ConnectionFactory();</code>
-<code>            factory.setHost("&lt;IP of PUSh Server&gt;");</code>
+<code>			  ConnectionFactory factory = new ConnectionFactory();</code><br/>
+<code>            factory.setHost("&lt;IP of PUSh Server&gt;");</code><br/>
 <br/>
-<code>            connection = factory.newConnection();</code>
-<code>            channel = connection.createChannel();</code>
+<code>            connection = factory.newConnection();</code><br/>
+<code>            channel = connection.createChannel();</code><br/>
 <br/>
-<code>            channel.queueDeclare(QUEUE_NAME, false, false, false, null);</code>
-<code>            String message = "Commit";</code>
+<code>            channel.queueDeclare(QUEUE_NAME, false, false, false, null);</code><br/>
+<code>            String message = "Commit";</code><br/>
 <br/>
-<code>            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();</code>
-<code>            props.put("path","Java/banking/BankProject/com/example/banking/MyBank.java");</code>
-<code>            props.put("branch","master");</code>
+<code>            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();</code><br/>
+<code>            props.put("path","Java/banking/BankProject/com/example/banking/MyBank.java");</code><br/>
+<code>            props.put("branch","master");</code><br/>
 <br/>
-<code>            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();</code>
-<code>            AMQP.BasicProperties basicProps = bob.headers(props).build();</code>
-<code>            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());</code>
+<code>            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();</code><br/>
+<code>            AMQP.BasicProperties basicProps = bob.headers(props).build();</code><br/>
+<code>            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());</code><br/>
 <br/>
 <br/>
 <br/>
