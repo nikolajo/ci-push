@@ -32,7 +32,7 @@ See below in the DEVELOPING ci-push section.
 
 <b>VCS</b><br/>
 All the available hooks and triggers can be found in the VCS folder. They are subdivided by VCS system and platform.
-A Git hook for windows can be found in the folder VCS/Git/Windows/. Each folder will also contain a INSTALL.md file that describes
+A Git hook for windows can be found in the folder VCS/Git/Windows/. Each folder will also contain an INSTALL.md file that describes
 how to install/configure/use the hook.<br/>
 
 <b>Server</b><br/>
@@ -42,7 +42,7 @@ folders for detailed instructions.
 
 <b>CI</b><br/>
 All plugins for the CI systems can be found in the CI folder. They are subdivede by CI system and platform ( if necessary )
-A Jenkins plugin can be found in CI/Jenkins. Each folder contains a INSTALL.md file that describes how to install/configure/use the plugin.
+A Jenkins plugin can be found in CI/Jenkins. Each folder contains an INSTALL.md file that describes how to install/configure/use the plugin.
 	
 	
 	
@@ -112,14 +112,14 @@ This can be done in many ways and by different languages. See below for a Java e
 <code>            channel.basicConsume(queueName, true, consumer);</code><br/>
 <br/>
 <code>            while (true) { //This might not be a reasonable loop</code><br/>
-<code>                        QueueingConsumer.Delivery delivery = consumer.nextDelivery();</code><br/>
-<code>                        String message = new String(delivery.getBody());</code><br/>
-<code>                        String routingKey = delivery.getEnvelope().getRoutingKey();</code><br/>
+<code>					QueueingConsumer.Delivery delivery = consumer.nextDelivery();</code><br/>
+<code> 					AMQP.BasicProperties props = delivery.getProperties();</code><br/>
+<code>					String branch = props.getHeaders().get("branch").toString();</code><br/>
+<code>					String path = props.getHeaders().get("path").toString();</code><br/>
 <code>            }</code><br/>
 <br/>
-The <code>message</code> isn't used for anything useful, but the <code>routingKey</code> is the topic routing key that consists of the branch and the path separated by a . (dot). See <a href="http://www.rabbitmq.com/tutorials/tutorial-five-java.html">RabbitMQ Topic Routing Key</a> 
-for futher explanation on topics and routing keys.<br/>
-The branch and path must be separated and any internal listeners notifed. For reference look at the <a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
+The <code>branch</code> and <code>path</code> now holds the values thath the VCS system pushed and internal listeners can be notified.<br/>
+For reference look at the <a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
 
 
 
