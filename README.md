@@ -7,8 +7,7 @@ The idea is to create a loosely coupled system that allows different VCS's to em
 Thereby achieving push from the VCS to the CI platform. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
 Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ) and vice versa.
 
-The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server.
-
+The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server. However a cloud Push Server raisea all the usual questions regarding security and so on.
 
 3 tiers are present:
 
@@ -20,7 +19,6 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 
 <b>CI tier:</b>
 - A CI plugin that is able to register as a listener on the server tier and when notified trigger a build
-
 
 USING ci-push
 ==============
@@ -69,9 +67,10 @@ the contents of such a file is shown here:<br/>
 <code>branch=master</code><br/>
 <code>path=Java/banking/BankProject/com/example/banking/MyBank.java</code><br/>
 The example here will then trigger all CI systems that are listening for events for branch master and paths matching part of Java/banking/BankProject/com/example/banking/MyBank.java<br/>
+For reference look at the <a href="VCS/Git/Windows/post-commit-event.cmd">Git hook Windows script</a> - it simply creates and copies a file to the Push Server file share<br/>
 <br/>
 <b>The http interface</b><br/>
-The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP of Push Server&gt;:8081/push?branch=&lt;branch&gt;&path=&lt;path&gt;,
+The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP/DNS of Push Server&gt;:8081/push?branch=&lt;branch&gt;&path=&lt;path&gt;,
 where &lt;branch&gt; is the branch that the file was commited on and &lt;path&gt; is the path of the commited file.<br/>
 <br/>
 <b>The AMQP interface</b><br/>
@@ -79,7 +78,7 @@ The AMQP interface works by putting a message on the queue named <i>PushTriggerQ
 The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials</a><br/>
 <br/>
 <code>			  ConnectionFactory factory = new ConnectionFactory();</code><br/>
-<code>            factory.setHost("&lt;IP of PUSh Server&gt;");</code><br/>
+<code>            factory.setHost("&lt;IP/DNS of Push Server&gt;");</code><br/>
 <br/>
 <code>            connection = factory.newConnection();</code><br/>
 <code>            channel = connection.createChannel();</code><br/>
@@ -100,7 +99,7 @@ The CI plugin is really about understanding the CI systems framework or way of w
 This can be done in many ways and by different languages. See below for a Java example and look at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials</a> for examples in other languages.<br/>
 <br/>
 <code>            ConnectionFactory factory = new ConnectionFactory();</code><br/>
-<code>            factory.setHost("bist01b1");</code><br/>
+<code>            factory.setHost("&lt;IP/DNS of Push Server&gt;");</code><br/>
 <code>            Connection connection = factory.newConnection();</code><br/>
 <code>            Channel channel = connection.createChannel();</code><br/>
 <br/>
