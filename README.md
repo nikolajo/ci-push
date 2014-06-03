@@ -52,4 +52,66 @@ A Jenkins plugin can be found in CI/Jenkins. Each folder contains a INSTALL.md f
 	
 DEVELOPING ci-push
 ===================
-Coming....
+Two types of plugins are required to use ci-push. One plugin ( called hook in this section ) is needed for the VCS system and another plugin is needed for the CI systen.<br/>
+<br/>
+<b>Developing a VCS hook</b><br/>
+To develop a hook for the VCS system it is necessary to use and understand the VCS systems hook mechanism. For Git hooks are created as script files 
+that are put in a specific place in the Git repository. For other VCS systems this may be different.<br/>
+<br/>
+The Push Server has 3 interfaces that a VCS hook can use:
+- The file interface
+- The http interface 
+- The AMQP interface
+
+<b>The file interface</b><br/>
+The file interface works by copying ( moving ) a file to a specific share on the Push Server. This share is typically setup when the Push Server is installed. The default share is
+'pushfiles'. The file the is being moved to the share must contain two lines. A line that tells which branch the commited file was on and a line that tells which path the commited file has. An example of 
+the contents of such a file is shown here:<br/>
+branch=master<br/>
+path=Java/banking/BankProject/com/example/banking/MyBank.java<br/>
+The example here will then trigger all CI systems that are listening for events for branch master and paths matching part of Java/banking/BankProject/com/example/banking/MyBank.java<br/>
+<br/>
+<b>The http interface</b><br/>
+The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP of Push Server&gt;:8081/push&path=&lt;path&gt;&branch=&lt;branch&gt;,
+where &lt;path&gt; is the path of the commited file and &lt;branch&gt; is the branch that the file was commited on.<br/>
+<br/>
+<b>The AMQP interface</b><br/>
+The AMQP interface works by putting a message on the PushTriggerQueue that the Push Server sets up when installed. The PushTriggerQueue can be found on the machine that the Push Server is installed on.<br/>
+The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ</a><br/>
+<code><br/>
+            ConnectionFactory factory = new ConnectionFactory();<br/>
+            factory.setHost("&lt;IP of PUSh Server&gt;");<br/>
+			<br/>
+            connection = factory.newConnection();<br/>
+            channel = connection.createChannel();<br/>
+			<br/>
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);<br/>
+            String message = "Commit";<br/>
+			<br/>
+            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();<br/>
+            props.put("path","Java/banking/BankProject/com/example/banking/MyBank.java");<br/>
+            props.put("branch","master");<br/>
+			<br/>
+            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();<br/>
+            AMQP.BasicProperties basicProps = bob.headers(props).build();<br/>
+			<br/>
+            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());<br/>
+</code><br/>
+You can choose which ever interface suits your purpose best and fits best with the given hooks in the VCS system.<br/>
+<br/>
+<br/>
+<b>Developing a CI plugin</b><br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
