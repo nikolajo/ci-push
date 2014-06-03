@@ -21,8 +21,6 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 <b>CI tier:</b>
 - A CI plugin that is able to register as a listener on the server tier and when notified trigger a build
 
-The glue that binds these tiers is the event. The event has two attributes: branch and path
-
 
 USING ci-push
 ==============
@@ -77,8 +75,8 @@ The http interface works by doing a http get on a specified URL. The URL is typi
 where &lt;branch&gt; is the branch that the file was commited on and &lt;path&gt; is the path of the commited file.<br/>
 <br/>
 <b>The AMQP interface</b><br/>
-The AMQP interface works by putting a message on the PushTriggerQueue that the Push Server sets up when installed. The PushTriggerQueue can be found on the machine that the Push Server is installed on.<br/>
-The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ</a><br/>
+The AMQP interface works by putting a message on the queue named <i>PushTriggerQueue</i> that the Push Server sets up when installed. The <i>PushTriggerQueue</i> can be found on the machine that the Push Server is installed on.<br/>
+The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials</a><br/>
 <br/>
 <code>			  ConnectionFactory factory = new ConnectionFactory();</code><br/>
 <code>            factory.setHost("&lt;IP of PUSh Server&gt;");</code><br/>
@@ -86,7 +84,7 @@ The message must contain the branch and path of the commited file as properties.
 <code>            connection = factory.newConnection();</code><br/>
 <code>            channel = connection.createChannel();</code><br/>
 <br/>
-<code>            channel.queueDeclare(QUEUE_NAME, false, false, false, null);</code><br/>
+<code>            channel.queueDeclare(QUEUE_NAME, false, false, false, null); //QUEUE_NAME is 'PushTriggerQueue'</code><br/>
 <code>            String message = "Commit";</code><br/>
 <br/>
 <code>            Map&lt;String, Object&gt; props = new HashMap&lt;String, Object&gt;();</code><br/>
@@ -96,10 +94,32 @@ The message must contain the branch and path of the commited file as properties.
 <code>            AMQP.BasicProperties.Builder bob = new AMQP.BasicProperties.Builder();</code><br/>
 <code>            AMQP.BasicProperties basicProps = bob.headers(props).build();</code><br/>
 <code>            channel.basicPublish("", QUEUE_NAME, basicProps, message.getBytes());</code><br/>
-<br/>
-<br/>
-<br/>
+<br/><br/><br/>
 <b>Developing a CI plugin</b><br/>
+The CI plugin is really about understanding the CI systems framework or way of working. All the CI system needs to do is to register as a listener on an AMQP topic named <i>PushTriggerTopic</i>.<br/>
+This can be done in many ways and by different languages. See below for a Java example and look at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials</a> for examples in other languages.<br/>
+<br/>
+<code>            ConnectionFactory factory = new ConnectionFactory();</code><br/>
+<code>            factory.setHost("bist01b1");</code><br/>
+<code>            Connection connection = factory.newConnection();</code><br/>
+<code>            Channel channel = connection.createChannel();</code><br/>
+<br/>
+<code>            channel.exchangeDeclare(EXCHANGE_NAME, "topic"); //EXCHANGE_NAME is 'PushTriggerTopic'</code><br/>
+<code>            String queueName = channel.queueDeclare().getQueue();</code><br/>
+<br/>
+<code>            channel.queueBind(queueName, EXCHANGE_NAME, "#");</code><br/>
+<br/>
+<code>            QueueingConsumer consumer = new QueueingConsumer(channel);</code><br/>
+<code>            channel.basicConsume(queueName, true, consumer);</code><br/>
+<br/>
+<code>            while (true) { //This might not be a reasonable loop</code><br/>
+<code>                QueueingConsumer.Delivery delivery = consumer.nextDelivery();</code><br/>
+<code>                String message = new String(delivery.getBody());</code><br/>
+<code>                String routingKey = delivery.getEnvelope().getRoutingKey();</code><br/>
+<code>            }</code><br/>
+<br/>
+The <code>message</code> isn't used for anything useful, but the <code>routingKey</code> is the topic routing key that consists of the branch and the path separated by a . (dot). See <a href="http://www.rabbitmq.com/tutorials/tutorial-five-java.html">RabbitMQ Topic Routing Key</a> 
+for futher explanation on topics and routing keys.<br/>
 
 
 
