@@ -118,8 +118,8 @@ This can be done in many ways and by different languages. See below for a Java e
 <code>					String path = props.getHeaders().get("path").toString();</code><br/>
 <code>            }</code><br/>
 <br/>
-The <code>branch</code> and <code>path</code> now holds the values thath the VCS system pushed and internal listeners can be notified.<br/>
-For reference look at the <a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
+The <code>branch</code> and <code>path</code> now holds the values that the VCS system pushed and internal listeners should be notified. For reference look at the 
+<a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
 
 
 
