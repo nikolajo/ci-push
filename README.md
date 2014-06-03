@@ -119,6 +119,7 @@ This can be done in many ways and by different languages. See below for a Java e
 <br/>
 The <code>message</code> isn't used for anything useful, but the <code>routingKey</code> is the topic routing key that consists of the branch and the path separated by a . (dot). See <a href="http://www.rabbitmq.com/tutorials/tutorial-five-java.html">RabbitMQ Topic Routing Key</a> 
 for futher explanation on topics and routing keys.<br/>
+The branch and path must be separated and any internal listeners notifed. For reference look at the <a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
 
 
 
