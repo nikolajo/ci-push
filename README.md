@@ -23,7 +23,7 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 USING ci-push
 ==============
 
-[![ci-push in action](http://img.youtube.com/vi/yi7si8Xi_Kw/0.jpg)](http://www.youtube.com/watch?v=yi7si8Xi_Kw)
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=yi7si8Xi_Kw" target="_blank"><img src="http://img.youtube.com/vi/yi7si8Xi_Kw/0.jpg" alt="ci-push in action" width="640" height="360" border="10" /></a>
 
 <b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only plugins for Jenkins and hooks for Git on Windows are available )
 - To get started install the Server as described in the <a href="./Server">Server</a> section.
