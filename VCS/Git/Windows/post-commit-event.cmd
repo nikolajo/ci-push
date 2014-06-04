@@ -15,7 +15,9 @@ for /f "tokens=3* delims=/ " %%a in ("%REFNAME%") do set BRANCH=%%a
 echo Branch is %BRANCH%
 
 :: get root repo path
-for %%* in (%CD%) do set REPOPATH=%%~n*
+set CURRENT_DIR_NO_GIT_EXT=%CD%
+set CURRENT_DIR_NO_GIT_EXT=%CURRENT_DIR_NO_GIT_EXT:\.git=%
+for %%* in (%CURRENT_DIR_NO_GIT_EXT%) do set REPOPATH=%%~n*
 set REPOPATH=%REPOPATH:\=/%
 echo Repo root path is %REPOPATH%
 
