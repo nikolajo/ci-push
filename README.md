@@ -22,6 +22,9 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 
 USING ci-push
 ==============
+
+YT("http://youtu.be/yi7si8Xi_Kw" , print = TRUE)
+
 <b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only plugins for Jenkins and hooks for Git on Windows are available )
 - To get started install the Server as described in the <a href="./Server">Server</a> section.
 - Then install and configure the Git hook as described in the <a href="./VCS/Git/Windows">VCS/Git/Windows</a> folder.
