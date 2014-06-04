@@ -7,7 +7,7 @@ The idea is to create a loosely coupled system that allows different VCS's to em
 Thereby achieving push from the VCS to the CI platform. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
 Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ) and vice versa.
 
-The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server. However a cloud Push Server raisea all the usual questions regarding security and so on.
+The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server. However a cloud Push Server raises all the usual questions regarding security and so on.
 
 3 tiers are present:
 

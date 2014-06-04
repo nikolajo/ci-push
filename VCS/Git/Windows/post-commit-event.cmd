@@ -32,7 +32,7 @@ FOR /F "eol=; delims=  " %%i in (%TEMPFILE%) do (
 	set PUSHFILE=%NEWREV%!c!.txt
 	echo branch=%BRANCH% > !PUSHFILE!
 	echo path=%REPOPATH%/%%i >> !PUSHFILE!
-	copy !PUSHFILE! \\bist01b1\pushfiles\!PUSHFILE!
+	copy !PUSHFILE! \\<IP/DNS of Push Server>\pushfiles\!PUSHFILE!
 	del !PUSHFILE!	
 )
 endlocal
