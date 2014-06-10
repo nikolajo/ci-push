@@ -3,8 +3,12 @@ ci-push
 
 This project aims to annihilate CI polling
 
-The idea is to create a loosely coupled system that allows different VCS's to emit commit events and different CI platforms to listen for these events.
-Thereby achieving push from the VCS to the CI platform. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
+Continuous Integration systems ( CI ) usually monitors version control systems ( VCS's ) by polling. In specified time intervals the CI system polls the VCS which reports back if any changes have occured.
+As in most cases polling in CI is an anti pattern and the solution is well known as pushing. A study in a major Danish IT coorporation showed that the CI system would poll around 1.7 mio. times a day with a set poll period of 10 minutes.
+Only around 6000 of these polls would actually detect a change - resulting in 1.694 mio. useless polls. Furthermore each detection could be delayed up to 10 minutes if the change occured right after a poll.
+The solution to this is of course pushing the information from the VCS to the CI system. If you search hard enough examples of this can be found, but all of them are point to point solutions. For instance SubVersion to Hudson or Atlassian to Team Foundation Server.
+This project aims to create a loosely coupled system that allows different VCS's to emit commit events and different CI platforms to listen for these events.
+Thereby achieving push from the VCS to the CI platform, hence getting instantaneous build and no polling. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
 Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ) and vice versa.
 
 The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server. However a cloud Push Server raises all the usual questions regarding security and so on.
@@ -23,7 +27,7 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 USING ci-push
 ==============
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=yi7si8Xi_Kw" target="_blank"><img src="http://img.youtube.com/vi/yi7si8Xi_Kw/0.jpg" alt="ci-push in action" width="640" height="360" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=UYBBhKfKxhc" target="_blank"><img src="http://img.youtube.com/vi/UYBBhKfKxhc/0.jpg" alt="ci-push in action" width="640" height="360" border="10" /></a>
 
 <b>ELIMINATE ALL POLLING IN 15 MINUTES</b> ( currently only plugins for Jenkins and hooks for Git on Windows are available )
 - To get started install the Server as described in the <a href="./Server">Server</a> section.
