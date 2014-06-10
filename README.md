@@ -27,7 +27,7 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 USING ci-push
 ==============
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=UYBBhKfKxhc" target="_blank"><img src="http://img.youtube.com/vi/UYBBhKfKxhc/0.jpg" alt="ci-push in action" width="640" height="360" border="10" /></a>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=UYBBhKfKxhc" target="_blank"><img src="http://img.youtube.com/vi/UYBBhKfKxhc/0.jpg" alt="ci-push in action" width="640" height="360" border="10" /></a><br/>
 A 2 minute demo showing the power of ci-push
 <br/>
 <br/>
