@@ -1,14 +1,15 @@
 ci-push
 =======
 
-This project aims to annihilate CI polling
+This project aims to annihilate CI polling.
 
-Continuous Integration systems ( CI ) usually monitors version control systems ( VCS's ) by polling. In specified time intervals the CI system polls the VCS which reports back if any changes have occured.
-As in most cases polling in CI is an anti pattern and the solution is well known as pushing. A study in a major Danish IT coorporation showed that the CI system would poll around 1.7 mio. times a day with a set poll period of 10 minutes.
-Only around 6000 of these polls would actually detect a change - resulting in 1.694 mio. useless polls. Furthermore each detection could be delayed up to 10 minutes if the change occured right after a poll.
-The solution to this is of course pushing the information from the VCS to the CI system. If you search hard enough examples of this can be found, but all of them are point to point solutions. For instance SubVersion to Hudson or Atlassian to Team Foundation Server.
-This project aims to create a loosely coupled system that allows different VCS's to emit commit events and different CI platforms to listen for these events.
-Thereby achieving push from the VCS to the CI platform, hence getting instantaneous build and no polling. The purpose of the Push Server is to decouple the VCS and CI systems and thereby avoiding point to point integrations.
+Continuous Integration systems ( CI ) usually monitors version control systems ( VCS ) by polling. In specified time intervals the CI system polls the VCS which reports back if any changes have occured.
+As in most cases polling in CI is an anti pattern and the solution is well known as pushing.<br/>
+A study in a major Danish IT company showed that the CI system would poll around 1.7 mio. times a day with a set poll period of 10 minutes.
+Only around 6000 of these polls would actually detect a change - resulting in 1.694 mio. useless polls. Furthermore each detection could be delayed up to 10 minutes if the change occured right after a poll.<br/>
+The solution to this is of course pushing the information from the VCS to the CI system. If you search hard enough examples of this can be found, but all of them are point to point solutions. For instance Subversion to Hudson or Atlassian to Team Foundation Server.<br/><br/>
+This project aims to create a loosely coupled system that allows different VCSs to emit events and different CI platforms to listen for these events.
+Thereby achieving push from the VCS to the CI platform, hence getting instantaneous build and no polling. The purpose of the Push Server is to decouple the VCS and CI systems in order to avoid these point to point integrations.<br/>
 Once a hook or trigger is written for a VCS it can be used with any and all CI systems ( that has a plugin ) and vice versa.
 
 The future might bring a Push Server in the cloud, so it isn't necessary for everybody to install their own server. However a cloud Push Server raises all the usual questions regarding security and so on.
@@ -24,6 +25,9 @@ The future might bring a Push Server in the cloud, so it isn't necessary for eve
 <b>CI tier:</b>
 - A CI plugin that is able to register as a listener on the server tier and when notified trigger a build
 
+<img src="ci-push-setup.jpg" border="0">
+An overview of the ci-push setup
+
 USING ci-push
 ==============
 
@@ -36,7 +40,7 @@ A 2 minute demo showing the power of ci-push
 - Then install and configure the Git hook as described in the <a href="./VCS/Git/Windows">VCS/Git/Windows</a> folder.
 - Then install and configure the Jenkins CI plugin as described in the <a href="./CI/Jenkins">CI/Jenkins</a> folder. 
 
-If you can't find your VCS or CI on your desired platform, please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
+If a plugin or hook/trigger is not available for your desired VCS or CI platform please contribute and create the appropriate triggers/hooks and/or plugins, so others can benefit. 
 See below in the DEVELOPING ci-push section.
 
 <b>VCS</b><br/>
@@ -50,7 +54,7 @@ Each of these components must be installed on a server that your VCS and CI syst
 folders for detailed instructions.
 
 <b>CI</b><br/>
-All plugins for the CI systems can be found in the CI folder. They are subdivede by CI system and platform ( if necessary )
+All plugins for the CI systems can be found in the CI folder. They are subdivided by CI system and platform ( if necessary ).
 A Jenkins plugin can be found in CI/Jenkins. Each folder contains an INSTALL.md file that describes how to install/configure/use the plugin.
 	
 	
@@ -60,8 +64,8 @@ DEVELOPING ci-push
 Two types of plugins are required to use ci-push. One plugin ( called hook in this section ) is needed for the VCS system and another plugin is needed for the CI systen.<br/>
 <br/>
 <b>Developing a VCS hook</b><br/>
-To develop a hook for the VCS system it is necessary to use and understand the VCS systems hook mechanism. For Git hooks are created as script files 
-that are put in a specific place in the Git repository. For other VCS systems this may be different.<br/>
+To develop a hook for the VCS system it is necessary to use and understand the VCS systems hook mechanism. Git hooks are created as script files 
+that are put in a specific place in the Git repository. In other VCSs this may be different.<br/>
 <br/>
 The Push Server has 3 interfaces that a VCS hook can use:
 - The file interface
@@ -76,7 +80,7 @@ the contents of such a file is shown here:<br/>
 <code>branch=master</code><br/>
 <code>path=Java/banking/BankProject/com/example/banking/MyBank.java</code><br/>
 The example here will then trigger all CI systems that are listening for events for branch master and paths matching part of Java/banking/BankProject/com/example/banking/MyBank.java<br/>
-For reference look at the <a href="VCS/Git/Windows/post-commit-event.cmd">Git hook Windows script</a> - it simply creates and copies a file to the Push Server file share<br/>
+For reference look at the <a href="VCS/Git/Windows/post-commit-event.cmd">Git hook Windows script</a> - it simply creates and copies a file to the Push Server file share.<br/>
 <br/>
 <b>The http interface</b><br/>
 The http interface works by doing a http get on a specified URL. The URL is typically setup when the Push Server is installed. The default URL is http://&lt;IP/DNS of Push Server&gt;:8081/push?branch=&lt;branch&gt;&path=&lt;path&gt;,
@@ -84,7 +88,7 @@ where &lt;branch&gt; is the branch that the file was commited on and &lt;path&gt
 <br/>
 <b>The AMQP interface</b><br/>
 The AMQP interface works by putting a message on the queue named <i>PushTriggerQueue</i> that the Push Server sets up when installed. The <i>PushTriggerQueue</i> can be found on the machine that the Push Server is installed on.<br/>
-The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials</a><br/>
+The message must contain the branch and path of the commited file as properties. See below Java example on how to do this. Other languages and examples are avialable at <a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ Tutorials.</a><br/>
 <br/>
 <code>			  ConnectionFactory factory = new ConnectionFactory();</code><br/>
 <code>            factory.setHost("&lt;IP/DNS of Push Server&gt;");</code><br/>
@@ -128,7 +132,7 @@ This can be done in many ways and by different languages. See below for a Java e
 <code>            }</code><br/>
 <br/>
 The <code>branch</code> and <code>path</code> now holds the values that the VCS system pushed and internal listeners should be notified. For reference look at the 
-<a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method<br/>
+<a href="CI/Jenkins/source/push-receiver/src/main/java/org/jenkinsci/plugins/pushreceiver/RabbitMQConnector.java">Jenkins plugin</a> - especially the <code>run</code> method.<br/>
 
 
 
